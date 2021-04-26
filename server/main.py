@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from store import insert_table, view_table
 
@@ -22,12 +22,14 @@ class InsertModel(BaseModel):
 
 @app.post("/insert")
 async def insert_dataframe(data: InsertModel):
-    insert_table(data)
+    try:
+        insert_table(data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/view/{table_name}")
 async def view_dataframe(table_name: str):
-    print(table_name)
     return view_table(table_name)
 
 
