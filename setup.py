@@ -24,14 +24,13 @@ setup(
 
     install_requires=[
         'Click',
-        'pyhumps==1.6.1',
         'fastapi==0.63.0',
         'uvicorn==0.13.4',
         'pydantic==1.8.1',
-        'pandas==1.1.5',
-        'sqlalchemy_utils==0.37.0',
-        'pyod==0.8.8',
-        'psycopg2-binary'
+        'sqlalchemy',
+        'sqlalchemy_utils',
+        'psycopg2-binary',
+        'pyod'
     ],
 
     entry_points='''
