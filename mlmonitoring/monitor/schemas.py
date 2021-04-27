@@ -1,6 +1,10 @@
 from typing import Callable, List, Optional, Union
 from mlmonitoring.client import Client
 from mlmonitoring.monitor.checks import Check
+import logging
+
+
+_logger = logging.getLogger(__name__)
 
 
 CheckList = Optional[
@@ -9,16 +13,17 @@ CheckList = Optional[
 
 
 class Monitoring:
-    """A monitoring policy.
+    """A monitoring policy containing a method and its checks.
 
-    Arguments:
-        method {Callable} -- A monitoring method.
-
-    Keyword Arguments:
-        low_risk {CheckList} -- List of checks in order to
-        warning low risk cases. (default: {None})
-        high_risk {CheckList} -- List of checks in order to
-        warning high risk cases. (default: {None})
+    Args:
+        table_name (str): The name of the table to be created/inserted.
+        method (Callable): A monitoring method to apply.
+        param_args (tuple, optional): Arguments of the method. Defaults to ().
+        param_kwargs (dict, optional): Arguments of the method. Defaults to {}.
+        low_risk (CheckList, optional): Low risk checks to be
+        applied. Defaults to None.
+        high_risk (CheckList, optional): High risk checks to be
+        applied. Defaults to None.
     """
     
     def __init__(
@@ -42,42 +47,69 @@ class Monitoring:
             else [high_risk]
         
     def get_table_name(self):
+        """Return the table name of the monitoring method.
+
+        Returns:
+            str: The table name.
+        """
         return self._table_name
 
     def __call__(self):
+        """Call function for the monitoring method.
+
+        Returns:
+            dict: A dictionary with information about the applied
+            method.
+        """
         results = self._method(*self._param_args, **self._param_kwargs)
 
-        lr = []
+        # low risk checks
+        low_risk_checks = []
         for risk in self._low_risk:
             warning, cases = risk(results)
             if warning:
-                lr.append((risk.name, cases))
+                low_risk_checks.append((risk.name, cases))
 
-        hr = []
+        # high_risk checks
+        high_risk_checks = []
         for risk in self._high_risk:
             warning, cases = risk(results)
             if warning:
-                hr.append((risk.name, cases))
+                high_risk_checks.append((risk.name, cases))
 
         return {
             'table_name': self._table_name,
             'results': results,
-            'low_risk': lr,
-            'high_risk': hr,
+            'low_risk': low_risk_checks,
+            'high_risk': high_risk_checks,
         }
 
 
 class MLmonitoring:
+    """Monitoring class to append monitoring methods
+    in sequence.
+    """
+    
     def __init__(self):
         self._monitors = []
         self._client = Client()
         self._project = ''
         
     def set_connection(self, api_url):
+        """Sets the server connection.
+
+        Args:
+            api_url (str): Endpoint for the server.
+        """
         self._client.set_connection(api_url)
         return self
     
     def set_project(self, project_name):
+        """Sets the project name.
+
+        Args:
+            project_name (str): The project name.
+        """
         self._project = project_name
         return self
 
@@ -90,6 +122,18 @@ class MLmonitoring:
         low_risk: CheckList = None,
         high_risk: CheckList = None
     ) -> None:
+        """Append a monitoring method.
+
+        Args:
+            table_name (str): The name of the table to be created/inserted.
+            method (Callable): A monitoring method to apply.
+            param_args (tuple, optional): Arguments of the method. Defaults to ().
+            param_kwargs (dict, optional): Arguments of the method. Defaults to {}.
+            low_risk (CheckList, optional): Low risk checks to be
+            applied. Defaults to None.
+            high_risk (CheckList, optional): High risk checks to be
+            applied. Defaults to None.
+        """
         self._monitors.append(Monitoring(
             table_name,
             method,
@@ -102,6 +146,12 @@ class MLmonitoring:
     def run(
         self
     ) -> None:
+        """Run the monitoring system.
+
+        Returns:
+            dict: A dictionary with the results of each
+            monitoring method.
+        """
         all_results = []
         for monitor in self._monitors:
             results = monitor()
@@ -111,7 +161,7 @@ class MLmonitoring:
                 self._project,
                 monitor.get_table_name()
             )
-            print('Inserted data to {}_{}'.format(
+            _logger.info('Inserted data to {}_{}'.format(
                 self._project,
                 monitor.get_table_name()
             ))
