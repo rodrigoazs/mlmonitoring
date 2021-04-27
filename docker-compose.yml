@@ -11,11 +11,20 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
         - POSTGRES_DB=postgres
+    # web:
+    #   build: ./server
+    #   command: python main.py
+    #   volumes:
+    #     - ./server:/code
+    #   ports:
+    #     - "8000:8000"
+    #   environment:
+    #     - MLMONITOR_DATABASE_URI=postgresql://postgres:postgres@postgres/postgres
+    #   depends_on:
+    #     - postgres
     web:
-      build: ./server
-      command: python main.py
-      volumes:
-        - ./server:/code
+      build: .
+      command: mlmonitoring --host 0.0.0.0 --port 8000
       ports:
         - "8000:8000"
       environment:

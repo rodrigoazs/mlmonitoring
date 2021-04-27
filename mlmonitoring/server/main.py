@@ -51,14 +51,7 @@ async def view_dataframe(table_name: str):
     help="The port to listen on (default: 8000)."
 )
 def cli(host, port):
-    click.echo('Initializing Sparkle server')
-    uvicorn.run(
-        "sparkle.server.main:app",
-        host=host,
-        port=port,
-        reload=True,
-        log_level="debug"
-    )
+    click.echo('Initializing MLmonitoring server')
     uvicorn.run(
         app,
         host=host,
