@@ -24,7 +24,7 @@ setup(
 
     install_requires=[
         'Click',
-        'fastapi==0.63.0',
+        'fastapi',
         'uvicorn==0.13.4',
         'pydantic==1.8.1',
         'sqlalchemy',
