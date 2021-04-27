@@ -16,16 +16,16 @@ def insert_table(data):
         create_database(engine.url)
 
     dataframe.to_sql(
-                name=data.table_name,
-                con=engine,
-                if_exists="append",
-                method="multi",
-            )
+        name=data.table_name,
+        con=engine,
+        if_exists="append",
+        method="multi",
+    )
 
 
 def view_table(table_name):
     data = pd.read_sql("SELECT * FROM {}".format(table_name), engine)
 
     dataframe = data.to_json(orient="records")
-    
+
     return dataframe

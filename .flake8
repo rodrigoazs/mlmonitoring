@@ -1,4 +1,5 @@
 [flake8]
+ignore=E999
 max-complexity = 10
 max-line-length = 88
-exclude = */__init__.py, */*/__init__.py, venv, test/*
+exclude = */__init__.py, */*/__init__.py, setup.py, venv, test/*
