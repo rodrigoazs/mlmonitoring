@@ -105,11 +105,9 @@ class MLmonitoring:
         all_results = []
         for monitor in self._monitors:
             results = monitor()
-            print('results', results)
-            print('type', type(results))
             all_results.append(results)
             self._client.insert(
-                results,
+                results['results'],
                 self._project,
                 monitor.get_table_name()
             )
