@@ -73,9 +73,9 @@ monitor = MLmonitoring() \
     .append(
         'feature_outlier',
         autoencoder_outlier_detection,
-        (X, X_unseen),
-        low_risk=Check.gt(0.5),
-        high_risk=Check.gt(0.8))
+        param_args=(X, X_unseen),
+        low_risk=[Check.gt(0.5)],
+        high_risk=[Check.gt(0.8)])
 
 # run monitor
 monitor.run()

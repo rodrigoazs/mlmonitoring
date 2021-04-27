@@ -25,13 +25,15 @@ class Monitoring:
         self,
         table_name: str,
         method: Callable,
-        data,
+        param_args=(),
+        param_kwargs={},
         low_risk: CheckList = None,
         high_risk: CheckList = None
     ) -> None:
         self._table_name = table_name
         self._method = method
-        self._data = data
+        self._param_args = param_args
+        self._param_kwargs = param_kwargs
         self._low_risk = low_risk if isinstance(low_risk, list) \
             else [] if low_risk is None \
             else [low_risk]
@@ -43,7 +45,7 @@ class Monitoring:
         return self._table_name
 
     def __call__(self):
-        results = self._method(self._data)
+        results = self._method(*self._param_args, **self.param_kwargs)
 
         lr = []
         for risk in self._low_risk:
@@ -83,11 +85,18 @@ class MLmonitoring:
         self,
         table_name: str,
         method: Callable,
-        data=None,
+        param_args=(),
+        param_kwargs={},
         low_risk: CheckList = None,
         high_risk: CheckList = None
     ) -> None:
-        self._monitors.append(Monitoring(table_name, method, data, low_risk, high_risk))
+        self._monitors.append(Monitoring(
+            table_name,
+            method,
+            param_args,
+            param_kwargs,
+            low_risk,
+            high_risk))
         return self
 
     def run(
