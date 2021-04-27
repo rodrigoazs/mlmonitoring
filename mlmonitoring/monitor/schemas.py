@@ -72,7 +72,7 @@ class MLmonitoring:
         self._project = ''
         
     def set_connection(self, api_url):
-        self._client.set_options(api_url=api_url)
+        self._client.set_connection(api_url)
         return self
     
     def set_project(self, project_name):

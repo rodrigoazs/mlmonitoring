@@ -6,7 +6,7 @@ from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
 from mlmonitoring import MLmonitoring, Check
 from mlmonitoring.monitor.model_drift.feature import (
-    scikit_autoencoder_outlier_detection
+    autoencoder_outlier_detection
 )
 
 # load breast cancer sample dataset
@@ -72,7 +72,7 @@ monitor = MLmonitoring() \
     .set_project('breast_cancer') \
     .append(
         'feature_outlier',
-        scikit_autoencoder_outlier_detection,
+        autoencoder_outlier_detection,
         (X, X_unseen),
         low_risk=Check.gt(0.5),
         high_risk=Check.gt(0.8))
