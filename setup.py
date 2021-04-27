@@ -25,11 +25,11 @@ setup(
     install_requires=[
         'Click',
         'pyhumps==1.6.1',
-        'fastapi',
+        'fastapi==0.63.0',
         'uvicorn==0.13.4',
         'pydantic==1.8.1',
         'psycopg2==2.8.6',
-        'pandas==1.2.4',
+        'pandas==1.1.5',
         'sqlalchemy_utils==0.37.0',
         'pyod==0.8.8'
     ],
