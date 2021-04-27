@@ -45,7 +45,7 @@ class Monitoring:
         return self._table_name
 
     def __call__(self):
-        results = self._method(*self._param_args, **self.param_kwargs)
+        results = self._method(*self._param_args, **self._param_kwargs)
 
         lr = []
         for risk in self._low_risk:
