@@ -21,7 +21,7 @@ class Client:
 
             route = '{}/insert'.format(self._api_url)
             req = session.post(route, json=data)
-            return {"status_code ": req.status_code}, {"status_response ": req.text}
+            return req
 
     def view(self, project_name, table_name):
         with requests.Session() as session:
@@ -30,5 +30,4 @@ class Client:
 
             route = '{}/view/{}_{}'.format(self._api_url, project_name, table_name)
             req = session.get(route)
-
-            return req.text
+            return req

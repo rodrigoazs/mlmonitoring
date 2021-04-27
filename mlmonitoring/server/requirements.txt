@@ -1,9 +1,0 @@
-pyhumps
-fastapi
-uvicorn
-pytest
-fastapi-sqlalchemy
-pydantic
-psycopg2
-pandas
-sqlalchemy_utils

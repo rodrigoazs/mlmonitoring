@@ -99,8 +99,7 @@ class MLmonitoring:
             all_results.append(results)
             self._client.insert(
                 results,
-                project=self._project,
-                database=self._project,
-                table=monitor.get_table_name()
+                self._project,
+                monitor.get_table_name()
             )
         return all_results
