@@ -3,6 +3,7 @@
 from mlmonitoring.monitor.utils import _calculate_psi
 # from mlmonitoring.monitor.utils.autoencoder import MLPRegressorAutoEncoder
 import numpy as np
+import pandas as pd
 
 
 def psi_drift(X_train, X_test, feature_names, feature_importances, **kwargs):
@@ -11,7 +12,9 @@ def psi_drift(X_train, X_test, feature_names, feature_importances, **kwargs):
         X_train[:, i], X_test[:, i],
         **kwargs, axis=1)
         for i in range(X_train.shape[1])]
-    return list(map(list, zip(feature_names, feature_importances, np.array(drift))))
+    result = list(map(list, zip(feature_names, feature_importances, np.array(drift))))
+    result = pd.DataFrame(result, columns=['feature', 'importance', 'psi'])
+    return result
 
 
 # def pca_outlier_detection(X_train, X_test, **kwargs):
