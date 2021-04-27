@@ -34,9 +34,6 @@ async def view_dataframe(table_name: str):
     return view_table(table_name)
 
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 @click.command()
 @click.option(
     '--host',

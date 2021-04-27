@@ -111,4 +111,8 @@ class MLmonitoring:
                 self._project,
                 monitor.get_table_name()
             )
+            print('Inserted data to {}_{}'.format(
+                self._project,
+                monitor.get_table_name()
+            ))
         return all_results
