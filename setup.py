@@ -27,7 +27,6 @@ setup(
         'pyhumps==1.6.1',
         'fastapi==0.63.0',
         'uvicorn==0.13.4',
-        'fastapi-sqlalchemy==0.2.1',
         'pydantic==1.8.1',
         'psycopg2==2.8.6',
         'pandas==1.2.4',
