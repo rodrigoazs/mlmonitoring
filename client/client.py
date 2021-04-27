@@ -29,7 +29,6 @@ class Client:
             session.mount(self._api_url, adapter)
 
             route = '{}/view/{}_{}'.format(self._api_url, project_name, table_name)
-
             req = session.get(route)
 
             return req.text
