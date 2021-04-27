@@ -2,7 +2,7 @@ import uvicorn
 import click
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from store import insert_table, view_table
+from mlmonitoring.server.store import insert_table, view_table
 
 
 app = FastAPI()
