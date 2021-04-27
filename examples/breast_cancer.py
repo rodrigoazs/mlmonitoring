@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
+# from mlmonitoring import MLmonitoring
 
 # load breast cancer sample dataset
 data = load_breast_cancer()
@@ -40,20 +41,20 @@ for train_index, test_index in kf.split(X):
 # calculate mean and st
 print("Accuracy score: {:.2f} +/- {:.2f}".format(
     np.mean(metrics['accuracy_score']),
-    1.96*np.std(metrics['accuracy_score'])
-    ))
+    1.96 * np.std(metrics['accuracy_score'])
+))
 print("Precision score: {:.2f} +/- {:.2f}".format(
     np.mean(metrics['precision_score']),
-    1.96*np.std(metrics['precision_score'])
-    ))
+    1.96 * np.std(metrics['precision_score'])
+))
 print("Recall score: {:.2f} +/- {:.2f}".format(
     np.mean(metrics['recall_score']),
-    1.96*np.std(metrics['recall_score'])
-    ))
+    1.96 * np.std(metrics['recall_score'])
+))
 print("AUC ROC score: {:.2f} +/- {:.2f}".format(
     np.mean(metrics['roc_auc_score']),
-    1.96*np.std(metrics['roc_auc_score'])
-    ))
+    1.96 * np.std(metrics['roc_auc_score'])
+))
 
 # train production model
 clf = LogisticRegression()
