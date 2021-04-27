@@ -1,24 +1,14 @@
 import uvicorn
 import click
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from mlmonitoring.server.store import insert_table, view_table
+from mlmonitoring.serve.schemas import InsertModel
+from mlmonitoring.server.store import (
+    insert_table,
+    view_table
+)
 
 
 app = FastAPI()
-
-
-class InsertModel(BaseModel):
-    table_name: str
-    dataframe: dict = {}
-
-    class Config:
-        schema_extra = {
-            "insert": {
-                "table_name": "Table name",
-                "dataframe": {"Key": "Value"},
-            }
-        }
 
 
 @app.post("/insert")
@@ -31,7 +21,10 @@ async def insert_dataframe(data: InsertModel):
 
 @app.get("/view/{table_name}")
 async def view_dataframe(table_name: str):
-    return view_table(table_name)
+    try:
+        return view_table(table_name)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @click.command()
