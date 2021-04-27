@@ -1,6 +1,7 @@
 from pyod.models.auto_encoder import AutoEncoder
 from pyod.models.pca import PCA
-from sparkle.monitor.utils import _calculate_psi
+from mlmonitoring.monitor.utils import _calculate_psi
+from mlmonitoring.monitor.utils.autoencoder import MLPRegressorAutoEncoder
 import numpy as np
 
 
@@ -19,7 +20,13 @@ def pca_outlier_detection(X_train, X_test, **kwargs):
     return detector.predict_proba(X_test)[:, -1]
 
 
-def autoencoder_outlier_detection(X_train, X_test, verbose=0, **kwargs):
-    detector = AutoEncoder(verbose=0, **kwargs)
+def autoencoder_outlier_detection(X_train, X_test, **kwargs):
+    detector = AutoEncoder(**kwargs)
+    detector.fit(X_train)
+    return detector.predict_proba(X_test)[:, -1]
+
+
+def scikit_autoencoder_outlier_detection(X_train, X_test, **kwargs):
+    detector = MLPRegressorAutoEncoder(**kwargs)
     detector.fit(X_train)
     return detector.predict_proba(X_test)[:, -1]
