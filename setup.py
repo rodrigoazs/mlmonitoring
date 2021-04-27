@@ -31,7 +31,7 @@ setup(
         'sqlalchemy',
         'sqlalchemy_utils',
         'psycopg2-binary',
-        'pyod'
+        # 'pyod'
     ],
 
     entry_points='''
