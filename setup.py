@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'Click',
         'pyhumps==1.6.1',
-        'fastapi==0.63.0',
+        'fastapi',
         'uvicorn==0.13.4',
         'pydantic==1.8.1',
         'psycopg2==2.8.6',
