@@ -4,7 +4,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
-# from mlmonitoring import MLmonitoring
+from mlmonitoring import MLmonitoring, Check
+from mlmonitoring.monitor.model_drift.feature import (
+    scikit_autoencoder_outlier_detection
+)
 
 # load breast cancer sample dataset
 data = load_breast_cancer()
@@ -26,7 +29,7 @@ for train_index, test_index in kf.split(X):
     y_train, y_test = y[train_index], y[test_index]
 
     # train model
-    clf = LogisticRegression()
+    clf = LogisticRegression(solver='liblinear')
     clf.fit(X_train, y_train)
 
     # predict test set
@@ -57,8 +60,22 @@ print("AUC ROC score: {:.2f} +/- {:.2f}".format(
 ))
 
 # train production model
-clf = LogisticRegression()
+clf = LogisticRegression(solver='liblinear')
 clf.fit(X, y)
 
 # predict
 y_pred = clf.predict(X_unseen)
+
+# monitoring
+monitor = MLmonitoring() \
+    .set_connection('http://localhost:8000') \
+    .set_project('breast_cancer') \
+    .append(
+        'feature_outlier',
+        scikit_autoencoder_outlier_detection,
+        (X, X_unseen),
+        low_risk=Check.gt(0.5),
+        high_risk=Check.gt(0.8))
+
+# run monitor
+monitor.run()
