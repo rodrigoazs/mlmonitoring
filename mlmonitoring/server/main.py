@@ -1,7 +1,7 @@
 import uvicorn
 import click
 from fastapi import FastAPI, HTTPException
-from mlmonitoring.serve.schemas import InsertModel
+from mlmonitoring.server.schemas import InsertModel
 from mlmonitoring.server.store import (
     insert_table,
     view_table
