@@ -43,6 +43,8 @@ class _CheckBase:
 
         if isinstance(samples, pd.Series):
             return samples
+        elif isinstance(samples, pd.DataFrame):
+            return samples
         elif isinstance(samples, np.ndarray):
             return pd.Series(samples)
         elif isinstance(samples, list):
@@ -51,13 +53,13 @@ class _CheckBase:
 
     def __call__(
         self,
-        samples: Union[np.ndarray, pd.Series, List],
+        samples: Union[np.ndarray, pd.Series, pd.DataFrame, List],
     ) -> Tuple[bool, pd.Series]:
         """Validate samples given a check method.
 
         Arguments:
-            samples (Union[np.ndarray, pd.Series, List]): Array with samples
-            from methods.
+            samples (Union[np.ndarray, pd.Series, pd.DataFrame, List]):
+            Array with samples from methods.
 
         Returns:
             Tuple[bool, pd.Series]: A tuple indicating if a warning has
