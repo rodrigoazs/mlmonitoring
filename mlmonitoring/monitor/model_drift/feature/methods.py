@@ -21,10 +21,9 @@ def pca_outlier_detection(X_train, X_test, **kwargs):
     detector.fit(X_train)
     prob = detector.predict_proba(X_test)[:, -1]
 
-    if isinstance(X_test, np.ndarray):
-        return pd.DataFrame(prob, columns=['outlier'])
-    elif isinstance(X_test, pd.DataFrame):
+    if isinstance(X_test, pd.DataFrame):
         return pd.DataFrame(prob, columns=['outlier'], index=X_test.index)
+    return pd.DataFrame(prob, columns=['outlier'])
 
 
 def autoencoder_outlier_detection(X_train, X_test, **kwargs):
@@ -32,7 +31,6 @@ def autoencoder_outlier_detection(X_train, X_test, **kwargs):
     detector.fit(X_train)
     prob = detector.predict_proba(X_test)[:, -1]
 
-    if isinstance(X_test, np.ndarray):
-        return pd.DataFrame(prob, columns=['outlier'])
-    elif isinstance(X_test, pd.DataFrame):
+    if isinstance(X_test, pd.DataFrame):
         return pd.DataFrame(prob, columns=['outlier'], index=X_test.index)
+    return pd.DataFrame(prob, columns=['outlier'])
