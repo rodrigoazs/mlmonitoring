@@ -7,12 +7,12 @@ import numpy as np
 class _CheckBase:
     """Check base class.
 
-    Arguments:
-        check_fn {Callable} -- A check function.
-
-    Keyword Arguments:
-        name {str} -- Name of the check function. (default: {None})
-        error {Optional[str]} -- Error message of the check function. (default: {None})
+    Args:
+        check_fn (Callable): A check function.
+        name (str, optional): Name of the check function.
+        Defaults to None.
+        error (Optional[str], optional): Error message of
+        the check function. Defaults to None.
     """
 
     def __init__(
@@ -33,12 +33,12 @@ class _CheckBase:
     ) -> pd.Series:
         """Prepare input for checking.
 
-        Arguments:
-            samples {Union[pd.Series, np.ndarray, List]} -- Array with samples
-            from methods.
+        Args:
+            samples (Union[pd.Series, np.ndarray, List]): Array
+            with samples.
 
         Returns:
-            pd.Series -- Samples converted to pd.Series.
+            pd.Series: Samples converted to pandas Series.
         """
 
         if isinstance(samples, pd.Series):
@@ -56,11 +56,11 @@ class _CheckBase:
         """Validate samples given a check method.
 
         Arguments:
-            samples {Union[np.ndarray, pd.Series, List]} -- Array with samples
+            samples (Union[np.ndarray, pd.Series, List]): Array with samples
             from methods.
 
         Returns:
-            Tuple[bool, pd.Series] -- A tuple indicating if a warning has
+            Tuple[bool, pd.Series]: A tuple indicating if a warning has
             to be called for a given samples.
         """
 
@@ -229,9 +229,6 @@ class Check(_CheckBase):
                 "The combination of min_value = %s and max_value = %s "
                 "defines an empty interval!" % (min_value, max_value)
             )
-
-        # Using functions from operator module to keep conditions out of the
-        # closure
 
         def _lt(series: pd.Series) -> pd.Series:
             """Comparison function for check"""
