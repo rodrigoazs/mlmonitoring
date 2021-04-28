@@ -8,7 +8,8 @@ from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
 from mlmonitoring import MLmonitoring, Check
 from mlmonitoring.monitor.model_drift.feature import (
-    psi_drift
+    psi_drift,
+    autoencoder_outlier_detection
 )
 
 
@@ -105,7 +106,20 @@ def perform_monitoring_example():
                 y_unseen,
                 y_pred,
             ),
-            low_risk=Check.lt(0.95))  \
+            low_risk=Check.lt(0.95)) \
+        .append(
+            'feature_outlier',
+            autoencoder_outlier_detection,
+            param_args=(
+                X,
+                X_unseen
+            ),
+            param_kwargs={
+                'hidden_neurons': [8, 4, 4, 8],
+                'verbose': 0,
+            },
+            low_risk=Check.gt(0.5),
+            high_risk=Check.gt(0.8)) \
         .append(
             'psi_drift',
             psi_drift,
@@ -113,14 +127,7 @@ def perform_monitoring_example():
                 X,
                 X_unseen,
                 feature_names,
-                feature_importances
-            ))
-    # .append(
-    #     'feature_outlier',
-    #     autoencoder_outlier_detection,
-    #     param_args=(X, X_unseen),
-    #     low_risk=[Check.gt(0.5)],
-    #     high_risk=[Check.gt(0.8)])
+                feature_importances))
 
     # run monitor
     results = monitor.run()
