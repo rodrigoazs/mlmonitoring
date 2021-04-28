@@ -19,10 +19,20 @@ def psi_drift(X_train, X_test, feature_names, feature_importances, **kwargs):
 def pca_outlier_detection(X_train, X_test, **kwargs):
     detector = PCA(**kwargs)
     detector.fit(X_train)
-    return detector.predict_proba(X_test)[:, -1]
+    prob = detector.predict_proba(X_test)[:, -1]
+
+    if isinstance(X_test, np.ndarray):
+        return pd.DataFrame(prob, columns=['outlier'])
+    elif isinstance(X_test, pd.DataFrame):
+        return pd.DataFrame(prob, columns=['outlier'], index=X_test.index)
 
 
 def autoencoder_outlier_detection(X_train, X_test, **kwargs):
     detector = AutoEncoder(**kwargs)
     detector.fit(X_train)
-    return detector.predict_proba(X_test)[:, -1]
+    prob = detector.predict_proba(X_test)[:, -1]
+
+    if isinstance(X_test, np.ndarray):
+        return pd.DataFrame(prob, columns=['outlier'])
+    elif isinstance(X_test, pd.DataFrame):
+        return pd.DataFrame(prob, columns=['outlier'], index=X_test.index)
