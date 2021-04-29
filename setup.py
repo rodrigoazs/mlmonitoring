@@ -30,6 +30,7 @@ setup(
         'sqlalchemy',
         'sqlalchemy_utils',
         'pandas==1.2.4',
+        'scikit-learn',
         'requests',
         'psycopg2-binary',
         'pyod'
