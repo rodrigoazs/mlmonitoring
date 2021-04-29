@@ -4,7 +4,8 @@ from fastapi import FastAPI, HTTPException
 from mlmonitoring.server.schemas import InsertModel
 from mlmonitoring.server.store import (
     insert_table,
-    view_table
+    view_table,
+    filter_table
 )
 
 
@@ -28,7 +29,7 @@ async def view_dataframe(table_name: str):
 
 
 @app.get("/filter/{table_name}/{query_string}")
-async def view_dataframe(table_name: str, query_string: str):
+async def filter_dataframe(table_name: str, query_string: str):
     try:
         return filter_table(table_name, query_string)
     except Exception as e:

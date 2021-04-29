@@ -183,8 +183,7 @@ class MLmonitoring:
             self._project,
             table_name,
         )
-
-        return pd.read_json(json.dumps(req.text), orient='table')
+        return pd.read_json(json.loads(req.text), orient='records')
   
     def filter(
         self,
@@ -204,4 +203,4 @@ class MLmonitoring:
             query_string
         )
 
-        return pd.read_json(json.dumps(req.text), orient='table')
+        return pd.read_json(json.loads(req.text), orient='records')
