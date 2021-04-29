@@ -27,11 +27,11 @@ setup(
         'fastapi',
         'uvicorn==0.13.4',
         'pydantic==1.8.1',
-        'pandas',
         'sqlalchemy',
         'sqlalchemy_utils',
         'psycopg2-binary',
-        'pyod'
+        'pyod',
+        'pandas'
     ],
 
     entry_points='''
