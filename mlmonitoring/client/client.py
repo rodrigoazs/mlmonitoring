@@ -71,3 +71,17 @@ class Client:
             )
             req = session.get(route)
             return req
+
+    def filter(self, project_name: str, table_name: str, query_string: str):
+        with requests.Session() as session:
+            adapter = requests.adapters.HTTPAdapter()
+            session.mount(self._api_url, adapter)
+
+            route = '{}/filter/{}_{}/{}'.format(
+                self._api_url,
+                project_name,
+                table_name,
+                query_string
+            )
+            req = session.get(route)
+            return req

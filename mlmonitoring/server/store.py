@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import sqlalchemy
 import pandas as pd
@@ -50,6 +51,45 @@ def view_table(table_name: str) -> pd.DataFrame:
 
     # read the table from the database
     data = pd.read_sql("SELECT * FROM {}".format(table_name), engine)
+
+    # convert to JSON as records orientation
+    dataframe = data.to_json(orient="records")
+
+    return dataframe
+
+
+def filter_table(table_name: str, query_string: str) -> pd.DataFrame:
+    # mapping string to sql conditionals
+    mapping = {
+        'gt': '>',
+        'ge': '>=',
+        'lt': '<',
+        'le': '<=',
+        'eq': '=',
+        'ne': '<>',
+    }
+
+    # matchs query string
+    match = re.findall(
+        r'([\w]*)\_\_([\w]*)\_\_([\w.-]*)',
+        query_string
+    )
+
+    sql_query = []
+    for query in match:
+        sql_filter = '{} {} {}'.format(
+            query[0],
+            mapping[query[1]],
+            query[2]
+        )
+        sql_query.append(sql_filter)
+    sql_query = ' AND '.join(sql_query)
+
+    # read the table from the database
+    data = pd.read_sql(
+        "SELECT * FROM {} WHERE {}".format(table_name, sql_query),
+        engine
+    )
 
     # convert to JSON as records orientation
     dataframe = data.to_json(orient="records")

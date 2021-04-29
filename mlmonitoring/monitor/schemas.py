@@ -1,6 +1,8 @@
 from typing import Callable, List, Optional, Union
 from mlmonitoring.client import Client
 from mlmonitoring.monitor.checks import Check
+import pandas as pd
+import json
 import logging
 
 
@@ -52,6 +54,7 @@ class Monitoring:
         Returns:
             str: The table name.
         """
+
         return self._table_name
 
     def __call__(self):
@@ -61,6 +64,7 @@ class Monitoring:
             dict: A dictionary with information about the applied
             method.
         """
+
         results = self._method(*self._param_args, **self._param_kwargs)
 
         # low risk checks
@@ -101,6 +105,7 @@ class MLmonitoring:
         Args:
             api_url (str): Endpoint for the server.
         """
+
         self._client.set_connection(api_url)
         return self
     
@@ -110,6 +115,7 @@ class MLmonitoring:
         Args:
             project_name (str): The project name.
         """
+
         self._project = project_name
         return self
 
@@ -134,6 +140,7 @@ class MLmonitoring:
             high_risk (CheckList, optional): High risk checks to be
             applied. Defaults to None.
         """
+
         self._monitors.append(Monitoring(
             table_name,
             method,
@@ -152,6 +159,7 @@ class MLmonitoring:
             dict: A dictionary with the results of each
             monitoring method.
         """
+
         all_results = []
         for monitor in self._monitors:
             results = monitor()
@@ -166,3 +174,32 @@ class MLmonitoring:
                 monitor.get_table_name()
             ))
         return all_results
+
+    def view(
+        table_name: str
+    ) -> pd.DataFrame:
+        req = self._client.view(
+            self._project,
+            table_name,
+        )
+
+        return pd.read_json(json.dumps(req.text), orient='table')
+  
+    def filter(
+        table_name: str,
+        **kwargs
+    ) -> pd.DataFrame:
+        query_string = []
+        for key, value in kwargs.items():
+            query_string.append(
+                '{}__{}'.format(key, value)
+            )
+        query_string = '&'.join(query_string)
+
+        req = self._client.filter(
+            self._project,
+            table_name,
+            query_string
+        )
+
+        return pd.read_json(json.dumps(req.text), orient='table')
