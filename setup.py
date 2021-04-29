@@ -29,9 +29,9 @@ setup(
         'pydantic==1.8.1',
         'sqlalchemy',
         'sqlalchemy_utils',
+        'pandas==1.2.4',
         'psycopg2-binary',
-        'pyod',
-        'pandas'
+        'pyod'
     ],
 
     entry_points='''
