@@ -179,6 +179,15 @@ class MLmonitoring:
         self,
         table_name: str
     ) -> pd.DataFrame:
+        """View a dataframe.
+
+        Args:
+            table_name (str): The table name.
+
+        Returns:
+            pd.DataFrame: The dataframe in the table.
+        """
+
         req = self._client.view(
             self._project,
             table_name,
@@ -190,6 +199,15 @@ class MLmonitoring:
         table_name: str,
         **kwargs
     ) -> pd.DataFrame:
+        """Filter table by query parameters.
+
+        Args:
+            table_name (str): The name of the table.
+
+        Returns:
+            pd.DataFrame: The dataframe filtered.
+        """
+
         query_string = []
         for key, value in kwargs.items():
             query_string.append(
@@ -202,5 +220,4 @@ class MLmonitoring:
             table_name,
             query_string
         )
-
         return pd.read_json(json.loads(req.text), orient='records')

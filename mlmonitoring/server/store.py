@@ -59,6 +59,17 @@ def view_table(table_name: str) -> pd.DataFrame:
 
 
 def filter_table(table_name: str, query_string: str) -> pd.DataFrame:
+    """Returns the dataframe stored in the
+    database table filtered by a query.
+
+    Args:
+        table_name (str): The name of the database table.
+        query_string (str): A query string.
+
+    Returns:
+        pd.DataFrame: The table as Pandas DataFrame.
+    """
+
     # mapping string to sql conditionals
     mapping = {
         'gt': '>',
