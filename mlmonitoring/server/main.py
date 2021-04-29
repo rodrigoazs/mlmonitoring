@@ -31,7 +31,7 @@ async def view_dataframe(table_name: str):
 @app.get("/filter/{table_name}/{query_string}")
 async def filter_dataframe(table_name: str, query_string: str):
     # try:
-    return filter_table(table_name, query_string)
+    return view_table(table_name, query_string)
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=str(e))
 
