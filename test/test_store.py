@@ -7,15 +7,14 @@ from mlmonitoring.server.schemas import InsertModel
 from sqlalchemy.exc import OperationalError
 
 
-@mock.patch.dict(os.environ, {
-    "MLMONITOR_DATABASE_URI": "sqlite:///:memory:"
-})
-def test_insert_table():
-    from mlmonitoring.server.store import insert_table
-
-    table_name = 'table_name'
+def generate_model(table_name):
+    table = [
+        [i, 0] for i in range(50)
+    ] + [
+        [i+50, 1] for i in range(50) 
+    ]
     dataframe = json.loads(pd.DataFrame(
-        [[1,2], [3,4]],
+        table,
         columns=['key', 'value']
     ).to_json(orient='table'))
 
@@ -23,6 +22,16 @@ def test_insert_table():
         table_name=table_name,
         dataframe=dataframe
     )
+    return model
+
+
+@mock.patch.dict(os.environ, {
+    "MLMONITOR_DATABASE_URI": "sqlite:///:memory:"
+})
+def test_insert_table():
+    from mlmonitoring.server.store import insert_table
+
+    model = generate_model('test_insert')   
 
     result = insert_table(model)
     assert result == None
@@ -34,20 +43,10 @@ def test_insert_table():
 def test_view_table_inserted_table():
     from mlmonitoring.server.store import insert_table, view_table
 
-    table_name = 'table_name'
-    dataframe = json.loads(pd.DataFrame(
-        [[1,2], [3,4]],
-        columns=['key', 'value']
-    ).to_json(orient='table'))
-
-    model = InsertModel(
-        table_name=table_name,
-        dataframe=dataframe
-    )
-
+    model = generate_model('test_view')
     insert_table(model)
 
-    result = view_table('table_name')
+    result = view_table('test_view')
     assert type(result) == str
 
 
@@ -58,4 +57,21 @@ def test_view_inexistent_table_raises_operational_error():
     from mlmonitoring.server.store import view_table
 
     with pytest.raises(OperationalError):
-        result = view_table('fake_table')
+        result = view_table('teste_view_inexistent')
+
+
+@mock.patch.dict(os.environ, {
+    "MLMONITOR_DATABASE_URI": "sqlite:///:memory:"
+})
+def test_filter_table():
+    from mlmonitoring.server.store import insert_table, filter_table
+
+    model = generate_model('teste_filter')
+    insert_table(model)
+
+    result = filter_table(
+        'teste_filter',
+        'value__gt__0.5'
+    )
+
+    assert len(json.loads(result)) == 50
