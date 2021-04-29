@@ -176,6 +176,7 @@ class MLmonitoring:
         return all_results
 
     def view(
+        self,
         table_name: str
     ) -> pd.DataFrame:
         req = self._client.view(
@@ -186,6 +187,7 @@ class MLmonitoring:
         return pd.read_json(json.dumps(req.text), orient='table')
   
     def filter(
+        self,
         table_name: str,
         **kwargs
     ) -> pd.DataFrame:
