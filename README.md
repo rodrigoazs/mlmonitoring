@@ -43,6 +43,6 @@ There are distinct phases in the lifecycle of an ML model. The final phase is Mo
 
 ![Source: martinfowler.com](https://christophergs.com/assets/images/monitoring/rsz_cd4ml.png)
 
-Monitoring can be divided in two different parts: Statistical tests on model inputs and output; and system health, latency, memory/CPU/disk utilization. This platform focus in monitoring drifts in ML models and its predictive performance.
+Monitoring can be divided in two different parts: Data Science issues, statistical tests on model inputs and output; and Operational issues, system health, latency, memory/CPU/disk utilization. This platform focus in monitoring drifts in ML models and its predictive performance.
 
 ![Source: martinfowler.com](https://i.imgur.com/Vram3ui.png)
