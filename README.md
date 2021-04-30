@@ -45,4 +45,6 @@ There are distinct phases in the lifecycle of an ML model. The final phase is Mo
 
 Monitoring can be divided in two different parts: Data Science issues, statistical tests on model inputs and output; and Operational issues, system health, latency, memory/CPU/disk utilization. This platform focus in monitoring drifts in ML models and its predictive performance.
 
+The monitoring results can be visualized in any data visualization you like such as Grafana, Kibana, Apache Superset or Metabase.
+
 ![Source: martinfowler.com](https://i.imgur.com/Vram3ui.png)
